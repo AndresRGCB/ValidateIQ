@@ -1,19 +1,28 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pathlib import Path
 import os
 
-from backend.database import engine, Base
+from backend.database import get_engine, Base
 from backend.routers import analytics, signups, stats
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Create database tables
+    engine = get_engine()
+    Base.metadata.create_all(bind=engine)
+    yield
+    # Shutdown: nothing to do
+
 
 app = FastAPI(
     title="ValidateIQ API",
     description="Landing page API with analytics tracking",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 # Include routers

@@ -23,7 +23,11 @@
       "Bash(git init:*)",
       "Bash(git remote add:*)",
       "Bash(git add:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: ValidateIQ Landing Page\n\n- FastAPI backend with PostgreSQL\n- React frontend with TypeScript and TailwindCSS\n- Full analytics tracking (visitors, events, signups)\n- Docker configuration for Railway deployment\n- Dark mode startup design\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
