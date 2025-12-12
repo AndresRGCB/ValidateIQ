@@ -80,7 +80,7 @@ export function WaitlistForm({
     try {
       const timeToSignup = Math.floor((Date.now() - pageLoadTime) / 1000);
 
-      const result = await submitSignup({
+      await submitSignup({
         visitor_id: visitorId,
         email,
         most_wanted_feature: feature,
