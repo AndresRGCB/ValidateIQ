@@ -77,7 +77,7 @@ export function Hero({ onCTAClick, trackCTA }: HeroProps) {
           </Button>
 
           <p className="mt-4 text-sm text-zinc-500">
-            Get <span className="text-accent-primary font-semibold">50% off</span> for your first 3 months
+            Get <span className="text-accent-primary font-semibold">50% off</span> for your first 3 months after launch
           </p>
         </div>
 

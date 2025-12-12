@@ -122,7 +122,7 @@ export function WaitlistForm({
               Check your inbox for a confirmation.
             </p>
             <p className="text-sm text-accent-primary">
-              You've locked in 50% off for your first 3 months
+              You've locked in 50% off for your first 3 months after launch
             </p>
           </div>
         </div>
@@ -150,7 +150,7 @@ export function WaitlistForm({
               + 50% Off for 3 Months
             </p>
             <p className="text-zinc-400 mt-2 text-sm">
-              Join early and get 50% off for your first 3 months.
+              Join early and get 50% off for your first 3 months after launch.
             </p>
           </div>
 
