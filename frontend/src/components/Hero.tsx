@@ -3,14 +3,12 @@ import { Button } from './ui/Button';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 interface HeroProps {
-  signupCount: number;
   onCTAClick: () => void;
   trackCTA: (text: string, position: string) => void;
 }
 
-export function Hero({ signupCount, onCTAClick, trackCTA }: HeroProps) {
+export function Hero({ onCTAClick, trackCTA }: HeroProps) {
   const { ref, isVisible } = useIntersectionObserver({ threshold: 0.1 });
-  const spotsLeft = Math.max(100 - signupCount, 0);
 
   const handleCTAClick = () => {
     trackCTA('Join the Waitlist', 'hero');
@@ -41,7 +39,7 @@ export function Hero({ signupCount, onCTAClick, trackCTA }: HeroProps) {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-primary"></span>
           </span>
           <span className="text-accent-primary text-sm font-medium">
-            {signupCount > 0 ? `${signupCount} founders already signed up` : 'Be among the first founders'}
+            Early access now open
           </span>
         </div>
 
@@ -78,11 +76,9 @@ export function Hero({ signupCount, onCTAClick, trackCTA }: HeroProps) {
             <ArrowRight className="w-5 h-5" />
           </Button>
 
-          {spotsLeft > 0 && (
-            <p className="mt-4 text-sm text-zinc-500 animate-pulse-subtle">
-              Only <span className="text-accent-primary font-semibold">{spotsLeft}</span> early bird spots left
-            </p>
-          )}
+          <p className="mt-4 text-sm text-zinc-500">
+            Get <span className="text-accent-primary font-semibold">50% off</span> for your first 3 months
+          </p>
         </div>
 
         {/* Trust badges */}

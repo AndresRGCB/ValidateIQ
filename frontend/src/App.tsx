@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { Hero } from './components/Hero';
 import { ProblemSection } from './components/ProblemSection';
 import { FeaturesSection } from './components/FeaturesSection';
@@ -6,11 +6,9 @@ import { SocialProof } from './components/SocialProof';
 import { WaitlistForm } from './components/WaitlistForm';
 import { Footer } from './components/Footer';
 import { useAnalytics } from './hooks/useAnalytics';
-import { getSignupCount } from './services/api';
 
 function App() {
-  const [signupCount, setSignupCount] = useState(0);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const isInitializedRef = useRef(false);
   const viewedSections = useRef<Set<string>>(new Set());
 
   const {
@@ -26,18 +24,11 @@ function App() {
     getPageLoadTime,
   } = useAnalytics();
 
-  // Initialize analytics and fetch signup count
+  // Initialize analytics
   useEffect(() => {
     const initialize = async () => {
       await init();
-      setIsInitialized(true);
-
-      try {
-        const data = await getSignupCount();
-        setSignupCount(data.count);
-      } catch (error) {
-        console.error('Failed to fetch signup count:', error);
-      }
+      isInitializedRef.current = true;
     };
 
     initialize();
@@ -71,20 +62,9 @@ function App() {
     }
   }, []);
 
-  // Refresh signup count after successful signup
-  const handleSignupSuccess = useCallback(async () => {
-    try {
-      const data = await getSignupCount();
-      setSignupCount(data.count);
-    } catch (error) {
-      console.error('Failed to refresh signup count:', error);
-    }
-  }, []);
-
   return (
     <div className="min-h-screen bg-bg-primary">
       <Hero
-        signupCount={signupCount}
         onCTAClick={scrollToWaitlist}
         trackCTA={trackCTAClick}
       />
@@ -99,14 +79,13 @@ function App() {
       <SocialProof onSectionView={handleSectionView} />
 
       <WaitlistForm
-        signupCount={signupCount}
-        visitorId={isInitialized ? getVisitorId() : null}
+        visitorId={isInitializedRef.current ? getVisitorId() : null}
         pageLoadTime={getPageLoadTime()}
         onSectionView={handleSectionView}
         onFormFocus={trackFormFocus}
         onFormFieldBlur={trackFormFieldBlur}
         onFormSubmit={trackFormSubmit}
-        onSignupSuccess={handleSignupSuccess}
+        onSignupSuccess={() => {}}
       />
 
       <Footer />

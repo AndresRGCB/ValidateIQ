@@ -7,7 +7,6 @@ import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import { submitSignup } from '../services/api';
 
 interface WaitlistFormProps {
-  signupCount: number;
   visitorId: number | null;
   pageLoadTime: number;
   onSectionView: (section: string) => void;
@@ -28,7 +27,6 @@ const featureOptions = [
 ];
 
 export function WaitlistForm({
-  signupCount,
   visitorId,
   pageLoadTime,
   onSectionView,
@@ -44,10 +42,8 @@ export function WaitlistForm({
   const [consent, setConsent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState<{ position: number; spotsLeft: number } | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
   const [hasInteracted, setHasInteracted] = useState(false);
-
-  const spotsLeft = Math.max(100 - signupCount, 0);
 
   if (isVisible) {
     onSectionView('waitlist_form');
@@ -93,7 +89,7 @@ export function WaitlistForm({
         time_to_signup_seconds: timeToSignup,
       });
 
-      setSuccess({ position: result.position, spotsLeft: result.spots_left });
+      setSuccess(true);
       onFormSubmit(true, feature);
       onSignupSuccess();
     } catch (err) {
@@ -121,15 +117,13 @@ export function WaitlistForm({
               You're in!
             </h3>
             <p className="text-zinc-400 mb-6">
-              Position <span className="text-white font-semibold">#{success.position}</span> on the waitlist.
+              Welcome to the waitlist! We'll notify you when we launch.
               <br />
               Check your inbox for a confirmation.
             </p>
-            {success.spotsLeft > 0 && (
-              <p className="text-sm text-zinc-500">
-                Only {success.spotsLeft} early bird spots left
-              </p>
-            )}
+            <p className="text-sm text-accent-primary">
+              You've locked in 50% off for your first 3 months
+            </p>
           </div>
         </div>
       </section>
@@ -153,25 +147,11 @@ export function WaitlistForm({
               Get Early Access
             </h2>
             <p className="text-accent-primary font-medium">
-              + 50% Lifetime Discount
+              + 50% Off for 3 Months
             </p>
             <p className="text-zinc-400 mt-2 text-sm">
-              First 100 founders get 50% off forever. We're at {signupCount}/100.
+              Join early and get 50% off for your first 3 months.
             </p>
-          </div>
-
-          {/* Progress bar */}
-          <div className="mb-8">
-            <div className="h-2 bg-bg-tertiary rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-tertiary transition-all duration-500"
-                style={{ width: `${Math.min(signupCount, 100)}%` }}
-              />
-            </div>
-            <div className="flex justify-between mt-2 text-xs text-zinc-500">
-              <span>{signupCount} signed up</span>
-              <span>{spotsLeft} spots left</span>
-            </div>
           </div>
 
           {/* Form */}
