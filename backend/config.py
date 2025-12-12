@@ -1,29 +1,25 @@
-from pydantic_settings import BaseSettings
-from pydantic import field_validator
 import os
 
 
-class Settings(BaseSettings):
-    database_url: str = "postgresql://validateiq:validateiq@localhost:5432/validateiq"
-    environment: str = "development"
-
-    @field_validator("database_url", mode="before")
-    @classmethod
-    def get_database_url(cls, v):
-        # Check multiple possible environment variable names
-        return (
-            os.getenv("DATABASE_URL") or
-            os.getenv("DATABASE_PRIVATE_URL") or
-            os.getenv("POSTGRES_URL") or
-            os.getenv("RAILWAY_DATABASE_URL") or
-            v
+class Settings:
+    def __init__(self):
+        # Read directly from environment variables
+        self.database_url = (
+            os.environ.get("DATABASE_URL") or
+            os.environ.get("DATABASE_PRIVATE_URL") or
+            os.environ.get("DATABASE_PUBLIC_URL") or
+            os.environ.get("POSTGRES_URL") or
+            "postgresql://validateiq:validateiq@localhost:5432/validateiq"
         )
+        self.environment = os.environ.get("ENVIRONMENT", "development")
 
-    class Config:
-        env_file = ".env"
-        extra = "ignore"
+        # Debug: print which URL we're using (without password)
+        if "localhost" not in self.database_url:
+            print(f"[CONFIG] Using database URL from environment")
+        else:
+            print(f"[CONFIG] WARNING: Using localhost database URL - no env var found")
+            print(f"[CONFIG] Available env vars: {[k for k in os.environ.keys() if 'DATA' in k or 'POSTGRES' in k or 'PG' in k]}")
 
 
 def get_settings() -> Settings:
-    # Always create fresh settings to pick up environment variables
     return Settings()
