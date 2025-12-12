@@ -1,0 +1,37 @@
+# Git
+.git
+.gitignore
+
+# Node modules (will be installed in container)
+frontend/node_modules
+
+# Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info
+
+# Environment
+.env
+.env.*
+
+# Build outputs
+frontend/dist
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Documentation
+README.md
